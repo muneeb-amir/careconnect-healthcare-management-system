@@ -1,0 +1,62 @@
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Hyperlink;
+import javafx.event.ActionEvent;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import java.io.IOException;
+
+public class PatientRegisterController {
+    
+    @FXML
+    private TextField nameField;
+    
+    @FXML
+    private TextField emailField;
+    
+    @FXML
+    private PasswordField passwordField;
+    
+    @FXML
+    private void handlePatientRegister() {
+        String name = nameField.getText().trim();
+        String email = emailField.getText().trim();
+        String password = passwordField.getText().trim();
+        HealthClinicSystem.patients.add(new Patient(name, email, password));
+        
+        showAlert("Registration successful.");
+    }
+    
+    @FXML
+    private void goBack(ActionEvent event) {
+        try {
+            // Load the Login.fxml file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
+            Parent root = loader.load();
+            
+            // Get the current stage (window)
+            Stage stage = (Stage) nameField.getScene().getWindow();
+            
+            // Set the new scene to the stage
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Failed to load the login page.");
+        }
+    }
+    
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION); // Change to INFORMATION type
+        alert.setTitle("Success");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.show();
+    }
+    
+}

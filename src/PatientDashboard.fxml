@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="PatientDashboardController" prefHeight="600.0" prefWidth="800.0" stylesheets="app.css">
+    <children>
+        <!-- Header (Centered at the top) -->
+        <Label text="Patient Dashboard" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #0078D7;" alignment="CENTER" AnchorPane.topAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
+
+        <!-- Navigation Panel (Centered in the middle) -->
+        <VBox spacing="25.0" alignment="CENTER" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="150.0" AnchorPane.bottomAnchor="150.0">
+            <children>
+                <!-- Book Appointment -->
+                <Button text="Book Appointment" fx:id="bookAppointmentButton" prefWidth="400.0" prefHeight="50.0"
+                        onAction="#handleBookAppointment" 
+                        style="-fx-background-color: #0078D7; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;"/>
+                
+                <!-- View Appointments -->
+                <Button text="View Appointments" fx:id="viewAppointmentsButton" prefWidth="400.0" prefHeight="50.0"
+                        onAction="#handleViewAppointments" 
+                        style="-fx-background-color: #0078D7; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;"/>
+                
+                <!-- View Doctor Profiles -->
+                <Button text="View Doctor Profiles" fx:id="viewDoctorProfilesButton" prefWidth="400.0" prefHeight="50.0"
+                        onAction="#handleViewDoctorProfiles" 
+                        style="-fx-background-color: #0078D7; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;"/>
+                
+                <!-- Logout -->
+                <Button text="Logout" fx:id="logoutButton" prefWidth="400.0" prefHeight="50.0"
+                        onAction="#handleLogout" 
+                        style="-fx-background-color: #D9534F; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;"/>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

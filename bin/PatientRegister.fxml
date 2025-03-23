@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="PatientRegisterController" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #e6f7ff;">
+    <children>
+        <VBox alignment="CENTER" spacing="15.0" style="-fx-padding: 20;" prefWidth="400.0" layoutX="200" layoutY="100">
+            <Label text="Register as Patient" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+            <TextField fx:id="nameField" promptText="Name" prefWidth="300.0" />
+            <TextField fx:id="emailField" promptText="Email" prefWidth="300.0" />
+            <PasswordField fx:id="passwordField" promptText="Password" prefWidth="300.0" />
+            <Button text="Register" onAction="#handlePatientRegister" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14px;" prefWidth="300.0" />
+            <Hyperlink text="Back to Login" onAction="#goBack" style="-fx-font-size: 14px;"/>
+        </VBox>
+    </children>
+</AnchorPane>

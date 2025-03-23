@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.ComboBox?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="BookAppointmentController" prefHeight="500.0" prefWidth="600.0" stylesheets="app.css">
+    <children>
+        <!-- Title -->
+        <Label text="Book Appointment" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #0078D7;" alignment="CENTER" AnchorPane.topAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
+
+        <!-- Available Doctors List -->
+        <Label text="Available Doctors:" style="-fx-font-size: 18px; -fx-font-weight: bold;" layoutX="20.0" layoutY="70.0"/>
+        <ListView fx:id="doctorListView" layoutX="20.0" layoutY="100.0" prefWidth="560.0" prefHeight="200.0">
+            <placeholder>
+                <Label text="No doctors available."/>
+            </placeholder>
+        </ListView>
+
+        <!-- Date Picker -->
+        <Label text="Appointment Date:" style="-fx-font-size: 16px;" layoutX="20.0" layoutY="320.0"/>
+        <DatePicker fx:id="datePicker" layoutX="20.0" layoutY="350.0" prefWidth="560.0" />
+
+        <!-- Time Dropdown -->
+        <Label text="Appointment Time:" style="-fx-font-size: 16px;" layoutX="20.0" layoutY="390.0"/>
+        <ComboBox fx:id="timeComboBox" layoutX="20.0" layoutY="420.0" prefWidth="560.0" promptText="Select time" />
+
+        <!-- Buttons -->
+        <HBox spacing="10.0" layoutX="20.0" layoutY="470.0">
+            <Button text="Book Appointment" onAction="#handleBookAppointment" style="-fx-background-color: #0078D7; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;" prefWidth="200.0" prefHeight="40.0"/>
+            <Button text="Cancel" onAction="#handleCancel" style="-fx-background-color: #D9534F; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;" prefWidth="200.0" prefHeight="40.0"/>
+        </HBox>
+    </children>
+</AnchorPane>
