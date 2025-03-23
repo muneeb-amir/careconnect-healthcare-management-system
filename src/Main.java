@@ -28,6 +28,6 @@ public class Main extends Application {
         databaseconnection db = new databaseconnection();
         db.getConnection();
         launch(args);                      
-       // HealthClinicSystem.deloader();
+        HealthClinicSystem.deloader();
     }
 }

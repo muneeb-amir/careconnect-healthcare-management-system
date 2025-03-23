@@ -63,7 +63,7 @@ class Patient extends User {
                     return location;
                 }
                 
-                                public Object getEmail() {
+                                public String getEmail() {
                                     return email;
                                 }
                                 
@@ -232,6 +232,67 @@ class Patient extends User {
                     }
                 }
             
+
+                public static void deloader() {
+                    try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
+                        Statement stmt = conn.createStatement();
+                        stmt.executeUpdate("DELETE FROM Appointments");
+                        stmt.executeUpdate("DELETE FROM Patients");
+                        stmt.executeUpdate("DELETE FROM Doctors");
+                        stmt.executeUpdate("DELETE FROM Admins");
+            
+                        String patientInsert = "INSERT INTO Patients (name, email, password) VALUES (?, ?, ?)";
+                        try (PreparedStatement pstmt = conn.prepareStatement(patientInsert)) {
+                            for (Patient p : patients) {
+                                pstmt.setString(1, p.getName());
+                                pstmt.setString(2, p.getEmail());
+                                pstmt.setString(3, p.getPassword());
+                                pstmt.executeUpdate();
+                            }
+                        }
+            
+                        String doctorInsert = "INSERT INTO Doctors (name, email, password, specialization, location) VALUES (?, ?, ?, ?, ?)";
+                        try (PreparedStatement pstmt = conn.prepareStatement(doctorInsert)) {
+                            for (Doctor d : doctors) {
+                                pstmt.setString(1, d.getName());
+                                pstmt.setString(2, d.getEmail());
+                                pstmt.setString(3, d.getPassword());
+                                pstmt.setString(4, d.getSpecialization());
+                                pstmt.setString(5, d.getLocation());
+                                pstmt.executeUpdate();
+                            }
+                        }
+            
+                        String adminInsert = "INSERT INTO Admins (name, email, password) VALUES (?, ?, ?)";
+                        try (PreparedStatement pstmt = conn.prepareStatement(adminInsert)) {
+                            for (Admin a : admins) {
+                                pstmt.setString(1, a.name);
+                                pstmt.setString(2, a.email);
+                                pstmt.setString(3, a.password);
+                                pstmt.executeUpdate();
+                            }
+                        }
+            
+                        String appointmentInsert = "INSERT INTO Appointments (patient_id, doctor_id, date, time, status, completed) VALUES (?, ?, ?, ?, ?, ?)";
+                        try (PreparedStatement pstmt = conn.prepareStatement(appointmentInsert)) {
+                            for (Appointment a : appointments) {
+                                pstmt.setInt(1, a.patient.getEmail().hashCode());
+                                pstmt.setInt(2, a.doctor.getEmail().hashCode());
+                                pstmt.setString(3, a.date);
+                                pstmt.setString(4, a.time);
+                                pstmt.setString(5, a.status);
+                                pstmt.setBoolean(6, a.completed);
+                                pstmt.executeUpdate();
+                            }
+                        }
+            
+                        System.out.println("Data successfully deloaded from arrays to database");
+            
+                    } catch (SQLException e) {
+                        System.err.println("Error deloading data: " + e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
 
     static void bookAppointment(Patient patient) {
         System.out.println("Available Doctors:");
