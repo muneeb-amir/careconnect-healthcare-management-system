@@ -2,7 +2,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="LoginController" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #e6f7ff;">
+<AnchorPane         xmlns:fx="http://javafx.com/fxml" fx:controller="LoginController" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #e6f7ff;">
     <children>
         <ScrollPane fitToWidth="true" fitToHeight="true" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <content>
