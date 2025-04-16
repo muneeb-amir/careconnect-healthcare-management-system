@@ -150,8 +150,8 @@ public class LoginController {
                     AnchorPane adminRoot = loader.load();
 
                     // Pass the admin's name to the dashboard controller
-                  //  AdminDashboardController controller = loader.getController();
-                 //   controller.setUsername(admin.getName());
+                    AdminDashboardController controller = loader.getController();
+                    controller.initialize(admin); // Pass the logged-in admin object
 
                     // Set the new scene for the Admin Dashboard
                     Scene adminScene = new Scene(adminRoot);

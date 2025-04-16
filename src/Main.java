@@ -31,3 +31,6 @@ public class Main extends Application {
         HealthClinicSystem.deloader();
     }
 }
+
+
+

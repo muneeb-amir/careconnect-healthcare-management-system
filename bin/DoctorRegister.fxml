@@ -12,7 +12,7 @@
             <TextField fx:id="specializationField" promptText="Specialization" prefWidth="300.0" />
             <TextField fx:id="locationField" promptText="Location" prefWidth="300.0" />
             <Button text="Register" onAction="#handleDoctorRegister" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14px;" prefWidth="300.0" />
-            <Hyperlink text="Back to Login" onAction="#goBack" style="-fx-font-size: 14px;"/>
+            <Hyperlink text="   Back to Login" onAction="#goBack" style="-fx-font-size: 14px;"/>
         </VBox>
     </children>
 </AnchorPane>
