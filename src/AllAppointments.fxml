@@ -5,7 +5,7 @@
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="AllAppointmentsController" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #e6f7ff;">
     <children>
-        <Label text="All Appointments" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #0078D7;"
+        <Label text="M Appointments" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #0078D7;"
                alignment="CENTER" AnchorPane.topAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
 
         <ListView fx:id="allAppointmentsListView" layoutX="20.0" layoutY="70.0" prefWidth="760.0" prefHeight="400.0">

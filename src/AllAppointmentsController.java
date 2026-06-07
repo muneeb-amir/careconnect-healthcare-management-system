@@ -10,6 +10,10 @@ import java.util.List;
 
 public class AllAppointmentsController {
 
+    AllAppointmentsController(){
+        loadAllAppointments();
+    }
+
     @FXML
     private ListView<HBox> allAppointmentsListView;
 
