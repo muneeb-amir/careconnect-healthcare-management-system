@@ -9,35 +9,35 @@
         <Label text="Update Profile" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #0078D7;" alignment="CENTER" AnchorPane.topAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
 
         <!-- Form for Updating Profile -->
-        <VBox spacing="20.0" alignment="CENTER" AnchorPane.topAnchor="100.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0">
+        <VBox spacing="20.0" alignment="CENTER" AnchorPane.topAnchor="100.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0">
             <children>
                 <!-- Name Field -->
-                <HBox spacing="10.0" alignment="CENTER_LEFT">
-                    <Label text="Name:" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
-                    <TextField fx:id="nameField" prefWidth="300.0" />
+                <HBox spacing="15.0" alignment="CENTER_LEFT">
+                    <Label text="Name:" style="-fx-font-size: 16px; -fx-font-weight: bold;" prefWidth="120.0"/>
+                    <TextField fx:id="nameField" prefWidth="300.0"/>
                 </HBox>
 
                 <!-- Specialization Field -->
-                <HBox spacing="10.0" alignment="CENTER_LEFT">
-                    <Label text="Specialization:" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
-                    <TextField fx:id="specializationField" prefWidth="300.0" />
+                <HBox spacing="15.0" alignment="CENTER_LEFT">
+                    <Label text="Specialization:" style="-fx-font-size: 16px; -fx-font-weight: bold;" prefWidth="120.0"/>
+                    <TextField fx:id="specializationField" prefWidth="300.0"/>
                 </HBox>
 
                 <!-- Location Field -->
-                <HBox spacing="10.0" alignment="CENTER_LEFT">
-                    <Label text="Location:" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
-                    <TextField fx:id="locationField" prefWidth="300.0" />
+                <HBox spacing="15.0" alignment="CENTER_LEFT">
+                    <Label text="Location:" style="-fx-font-size: 16px; -fx-font-weight: bold;" prefWidth="120.0"/>
+                    <TextField fx:id="locationField" prefWidth="300.0"/>
                 </HBox>
 
                 <!-- Update Button -->
                 <Button text="Update Profile" onAction="#handleUpdateProfile" 
                         style="-fx-background-color: #0078D7; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;" 
-                        prefWidth="200.0" prefHeight="40.0" />
+                        prefWidth="200.0" prefHeight="40.0" alignment="CENTER"/>
 
                 <!-- Back Button -->
                 <Button text="Back" onAction="#handleBack" 
                         style="-fx-background-color: #D9534F; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;" 
-                        prefWidth="100.0" prefHeight="40.0" />
+                        prefWidth="100.0" prefHeight="40.0" alignment="CENTER"/>
             </children>
         </VBox>
     </children>

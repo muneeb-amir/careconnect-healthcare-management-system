@@ -1,3 +1,4 @@
+
 import java.util.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -29,6 +30,7 @@ class Patient extends User {
         super(name, email, password);
     }
     public String getName() {
+        
        return name;
     }
         public String getEmail() {
@@ -37,6 +39,14 @@ class Patient extends User {
                 public String getPassword() {
                     return password;
                 }
+
+                public void removeAppointment(Appointment appointment) {
+                    if (appointments != null && appointments.contains(appointment)) {
+                        appointments.remove(appointment);
+                        //System.out.println("Appointment removed: " + appointment); // This will print a message indicating the appointment has been removed
+                    }
+                }
+                
                 
             }
             
@@ -44,12 +54,21 @@ class Patient extends User {
                 String specialization, location;
                 List<Appointment> appointments = new ArrayList<>();
                 double earnings = 0;
+                private List<Rating> ratings = new ArrayList<>();
+
             
-                public Doctor(String name, String email, String password, String specialization, String location) {
+                public Doctor(String name, String email, String password, String specialization, String location, double earnings) {
                     super(name, email, password);
                     this.specialization = specialization;
                     this.location = location;
+                    this.earnings = earnings;
                 }
+            
+                // Overloaded constructor with default earnings = 0
+                public Doctor(String name, String email, String password, String specialization, String location) {
+                    this(name, email, password, specialization, location, 0.0);
+                }
+            
             
                 public String getName() {
                     return name;
@@ -62,6 +81,11 @@ class Patient extends User {
                 public String getLocation() {
                     return location;
                 }
+
+                public List<Rating> getRatings() {
+                    return ratings;
+                }
+                
                 
                                 public String getEmail() {
                                     return email;
@@ -70,7 +94,40 @@ class Patient extends User {
                                                                 public String getPassword() {
                                                                     return password;
                                                                 }
-                                                            }
+
+                                                               
+                                                                public void addRating(int score, String review, String patientName) {
+                                                                    ratings.add(new Rating(score, review, patientName));
+                                                                }
+                                                                
+                                                                    
+                                                                }
+                                                            
+
+                                                                 class Rating {
+                                                                    private int score;
+                                                                    private String review;
+                                                                    private String patientName;
+                                                                
+                                                                    public Rating(int score, String review, String patientName) {
+                                                                        this.score = score;
+                                                                        this.review = review;
+                                                                        this.patientName = patientName;
+                                                                    }
+                                                                
+                                                                    public int getScore() {
+                                                                        return score;
+                                                                    }
+                                                                
+                                                                    public String getReview() {
+                                                                        return review;
+                                                                    }
+                                                                
+                                                                    public String getPatientName() {
+                                                                        return patientName;
+                                                                    }
+                                                                }
+                                                                
                                                             
                                                             class Admin extends User {
                                                                 public Admin(String name, String email, String password) {
@@ -95,6 +152,32 @@ class Patient extends User {
                                                                 public String getStatus() {
                                                                    return status;
                                                                 }
+
+                                                                @Override
+                                                                public String toString() {
+                                                                    return String.format("Appointment[Patient=%s, Doctor=%s, Date=%s, Time=%s, Status=%s]",
+                                                                            patient.getName(), doctor.getName(), date, time, status);
+                                                                }
+                                                            
+                                                                @Override
+                                                                public boolean equals(Object o) {
+                                                                    if (this == o) return true;
+                                                                    if (o == null || getClass() != o.getClass()) return false;
+                                                                    Appointment that = (Appointment) o;
+                                                                    return patient.equals(that.patient) &&
+                                                                           doctor.equals(that.doctor) &&
+                                                                           date.equals(that.date) &&
+                                                                           time.equals(that.time);
+                                                                }
+                                                            
+                                                                @Override
+                                                                public int hashCode() {
+                                                                    int result = patient.hashCode();
+                                                                    result = 31 * result + doctor.hashCode();
+                                                                    result = 31 * result + date.hashCode();
+                                                                    result = 31 * result + time.hashCode();
+                                                                    return result;
+                                                                }
                                                             }
                                                             
                                                             public  class HealthClinicSystem {
@@ -110,137 +193,146 @@ class Patient extends User {
                                                                 static List<Appointment> appointments = new ArrayList<>();
                                                             
                                                                 public static void main(String[] args) {
-                                                                    initializeData();
+                                                                   // initializeData();
                                                                     mainMenu();
                                                                 }
                                                             
                                                     
-                                                                static void initializeData() {
-                                                                    admins.add(new Admin("Admin", "admin@clinic.com", "admin123"));
-                                                                    doctors.add(new Doctor("Dr. Smith", "d", "d", "Cardiology", "New York"));
-                                                                    doctors.add(new Doctor("Dr. Jane", "drjane@clinic.com", "password", "Dermatology", "Los Angeles"));
-                                                                    patients.add(new Patient("John Doe", "p", "p"));
-                                                                    patients.add(new Patient("Jane Smith", "patient@clinic.com", "password"));
+                                                                
+                                
+                                                                public static void loader() {
+                                                                    try {
+                                                                        Class.forName("com.mysql.cj.jdbc.Driver");
+                                                                    } catch (ClassNotFoundException e) {
+                                                                        System.err.println("MySQL JDBC Driver not found. Include it in your library path");
+                                                                        e.printStackTrace();
+                                                                        return;
+                                                                    }
+                                                                
+                                                                    try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
+                                                                        patients.clear();
+                                                                        doctors.clear();
+                                                                        admins.clear();
+                                                                        appointments.clear();
+                                                                
+                                                                        // Load Patients
+                                                                        String patientQuery = "SELECT * FROM Patients";
+                                                                        try (Statement stmt = conn.createStatement();
+                                                                             ResultSet rs = stmt.executeQuery(patientQuery)) {
+                                                                            while (rs.next()) {
+                                                                                patients.add(new Patient(
+                                                                                    rs.getString("name"),
+                                                                                    rs.getString("email"),
+                                                                                    rs.getString("password")
+                                                                                ));
+                                                                            }
+                                                                        }
+                                                                
+                                                                        // Load Doctors
+                                                                        String doctorQuery = "SELECT * FROM Doctors";
+                                                                        try (Statement stmt = conn.createStatement();
+                                                                             ResultSet rs = stmt.executeQuery(doctorQuery)) {
+                                                                            while (rs.next()) {
+                                                                                Doctor doctor = new Doctor(
+                                                                                    rs.getString("name"),
+                                                                                    rs.getString("email"),
+                                                                                    rs.getString("password"),
+                                                                                    rs.getString("specialization"),
+                                                                                    rs.getString("location"),
+                                                                                    rs.getDouble("earnings")
+                                                                                );
+                                                                                doctors.add(doctor);
+                                                                            }
+                                                                        }
+                                                                
+                                                                        // Load Admins
+                                                                        String adminQuery = "SELECT * FROM Admins";
+                                                                        try (Statement stmt = conn.createStatement();
+                                                                             ResultSet rs = stmt.executeQuery(adminQuery)) {
+                                                                            while (rs.next()) {
+                                                                                admins.add(new Admin(
+                                                                                    rs.getString("name"),
+                                                                                    rs.getString("email"),
+                                                                                    rs.getString("password")
+                                                                                ));
+                                                                            }
+                                                                        }
+                                                                
+                                                                        // Load Appointments
+                                                                        String appointmentQuery = "SELECT * FROM Appointments";
+                                                                        try (Statement stmt = conn.createStatement();
+                                                                             ResultSet rs = stmt.executeQuery(appointmentQuery)) {
+                                                                            while (rs.next()) {
+                                                                                int patientId = rs.getInt("patient_id");
+                                                                                int doctorId = rs.getInt("doctor_id");
+                                                                
+                                                                                Patient patient = patients.stream()
+                                                                                    .filter(p -> p.getEmail().hashCode() == patientId)
+                                                                                    .findFirst().orElse(null);
+                                                                
+                                                                                Doctor doctor = doctors.stream()
+                                                                                    .filter(d -> d.getEmail().hashCode() == doctorId)
+                                                                                    .findFirst().orElse(null);
+                                                                
+                                                                                if (patient != null && doctor != null) {
+                                                                                    Appointment appointment = new Appointment(
+                                                                                        patient,
+                                                                                        doctor,
+                                                                                        rs.getString("date"),
+                                                                                        rs.getString("time")
+                                                                                    );
+                                                                                    appointment.status = rs.getString("status");
+                                                                                    appointment.completed = rs.getBoolean("completed");
+                                                                
+                                                                                    appointments.add(appointment);
+                                                                                    patient.appointments.add(appointment);
+                                                                                    doctor.appointments.add(appointment);
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                
+                                                                        // Load Ratings
+                                                                        String ratingQuery = "SELECT * FROM Ratings";
+                                                                        try (Statement stmt = conn.createStatement();
+                                                                             ResultSet rs = stmt.executeQuery(ratingQuery)) {
+                                                                            while (rs.next()) {
+                                                                                int doctorId = rs.getInt("doctor_id");
+                                                                                String patientName = rs.getString("patient_name");
+                                                                                int score = rs.getInt("score");
+                                                                                String review = rs.getString("review");
+                                                                
+                                                                                Doctor doctor = doctors.stream()
+                                                                                    .filter(d -> d.getEmail().hashCode() == doctorId)
+                                                                                    .findFirst().orElse(null);
+                                                                
+                                                                                if (doctor != null) {
+                                                                                    doctor.addRating(score, review,patientName);
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                
+                                                                        System.out.println("Data successfully loaded from database to arrays");
+                                                                
+                                                                    } catch (SQLException e) {
+                                                                        System.err.println("Database error: " + e.getMessage());
+                                                                        System.err.println("SQL State: " + e.getSQLState());
+                                                                        System.err.println("Error Code: " + e.getErrorCode());
+                                                                        e.printStackTrace();
+                                                                    }
                                                                 }
-                                
-       
-                                public static void loader() {
-                                    // First, try to load the MySQL driver
-                                    try {
-                                        Class.forName("com.mysql.cj.jdbc.Driver");
-                                    } catch (ClassNotFoundException e) {
-                                        System.err.println("MySQL JDBC Driver not found. Include it in your library path");
-                                        e.printStackTrace();
-                                        return;
-                                    }
-                                
-                                    try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
-                                        patients.clear();
-                                        doctors.clear();
-                                        admins.clear();
-                                        appointments.clear();
-                                
-                                        // Load Patients
-                                        String patientQuery = "SELECT * FROM Patients";
-                                        try (Statement stmt = conn.createStatement();
-                                             ResultSet rs = stmt.executeQuery(patientQuery)) {
-                                            while (rs.next()) {
-                                                patients.add(new Patient(
-                                                    rs.getString("name"),
-                                                    rs.getString("email"),
-                                                    rs.getString("password")
-                                                ));
-                                            }
-                                        }
-                                
-                                        // Load Doctors
-                                        String doctorQuery = "SELECT * FROM Doctors";
-                                        try (Statement stmt = conn.createStatement();
-                                             ResultSet rs = stmt.executeQuery(doctorQuery)) {
-                                            while (rs.next()) {
-                                                doctors.add(new Doctor(
-                                                    rs.getString("name"),
-                                                    rs.getString("email"),
-                                                    rs.getString("password"),
-                                                    rs.getString("specialization"),
-                                                    rs.getString("location")
-                                                ));
-                                            }
-                                        }
-                                
-                                        // Load Admins
-                                        String adminQuery = "SELECT * FROM Admins";
-                                        try (Statement stmt = conn.createStatement();
-                                             ResultSet rs = stmt.executeQuery(adminQuery)) {
-                                            while (rs.next()) {
-                                                admins.add(new Admin(
-                                                    rs.getString("name"),
-                                                    rs.getString("email"),
-                                                    rs.getString("password")
-                                                ));
-                                            }
-                                        }
-                                
-                                        // Load Appointments
-                                        String appointmentQuery = "SELECT * FROM Appointments";
-                                        try (Statement stmt = conn.createStatement();
-                                             ResultSet rs = stmt.executeQuery(appointmentQuery)) {
-                                            while (rs.next()) {
-                                                Patient patient = null;
-                                                Doctor doctor = null;
-                                                
-                                                int patientId = rs.getInt("patient_id");
-                                                int doctorId = rs.getInt("doctor_id");
-                                                
-                                                for (Patient p : patients) {
-                                                    if (p.getEmail().hashCode() == patientId) {
-                                                        patient = p;
-                                                        break;
-                                                    }
-                                                }
-                                                
-                                                for (Doctor d : doctors) {
-                                                    if (d.getEmail().hashCode() == doctorId) {
-                                        doctor = d;
-                                        break;
-                                    }
-                                }
-                                
-                                if (patient != null && doctor != null) {
-                                    Appointment appointment = new Appointment(
-                                        patient,
-                                        doctor,
-                                        rs.getString("date"),
-                                        rs.getString("time")
-                                    );
-                                    appointment.status = rs.getString("status");
-                                    appointment.completed = rs.getBoolean("completed");
-                                    appointments.add(appointment);
-                                    patient.appointments.add(appointment);
-                                    doctor.appointments.add(appointment);
-                                }
-                            }
-                        }
-                
-                        System.out.println("Data successfully loaded from database to arrays");
-                
-                    } catch (SQLException e) {
-                        System.err.println("Database error: " + e.getMessage());
-                        System.err.println("SQL State: " + e.getSQLState());
-                        System.err.println("Error Code: " + e.getErrorCode());
-                        e.printStackTrace();
-                    }
-                }
-            
-
+                                                                
                 public static void deloader() {
                     try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
                         Statement stmt = conn.createStatement();
+                
+                        // Clear all existing records
+                        stmt.executeUpdate("DELETE FROM Ratings");
                         stmt.executeUpdate("DELETE FROM Appointments");
                         stmt.executeUpdate("DELETE FROM Patients");
                         stmt.executeUpdate("DELETE FROM Doctors");
                         stmt.executeUpdate("DELETE FROM Admins");
-            
+                
+                        // Insert Patients
                         String patientInsert = "INSERT INTO Patients (name, email, password) VALUES (?, ?, ?)";
                         try (PreparedStatement pstmt = conn.prepareStatement(patientInsert)) {
                             for (Patient p : patients) {
@@ -250,8 +342,9 @@ class Patient extends User {
                                 pstmt.executeUpdate();
                             }
                         }
-            
-                        String doctorInsert = "INSERT INTO Doctors (name, email, password, specialization, location) VALUES (?, ?, ?, ?, ?)";
+                
+                        // Insert Doctors
+                        String doctorInsert = "INSERT INTO Doctors (name, email, password, specialization, location, earnings) VALUES (?, ?, ?, ?, ?, ?)";
                         try (PreparedStatement pstmt = conn.prepareStatement(doctorInsert)) {
                             for (Doctor d : doctors) {
                                 pstmt.setString(1, d.getName());
@@ -259,10 +352,12 @@ class Patient extends User {
                                 pstmt.setString(3, d.getPassword());
                                 pstmt.setString(4, d.getSpecialization());
                                 pstmt.setString(5, d.getLocation());
+                                pstmt.setDouble(6, d.earnings);
                                 pstmt.executeUpdate();
                             }
                         }
-            
+                
+                        // Insert Admins
                         String adminInsert = "INSERT INTO Admins (name, email, password) VALUES (?, ?, ?)";
                         try (PreparedStatement pstmt = conn.prepareStatement(adminInsert)) {
                             for (Admin a : admins) {
@@ -272,7 +367,8 @@ class Patient extends User {
                                 pstmt.executeUpdate();
                             }
                         }
-            
+                
+                        // Insert Appointments
                         String appointmentInsert = "INSERT INTO Appointments (patient_id, doctor_id, date, time, status, completed) VALUES (?, ?, ?, ?, ?, ?)";
                         try (PreparedStatement pstmt = conn.prepareStatement(appointmentInsert)) {
                             for (Appointment a : appointments) {
@@ -285,15 +381,30 @@ class Patient extends User {
                                 pstmt.executeUpdate();
                             }
                         }
-            
+                
+                        // Insert Ratings
+                        String ratingInsert = "INSERT INTO Ratings (doctor_id, patient_name, score, review) VALUES (?, ?, ?, ?)";
+                        try (PreparedStatement pstmt = conn.prepareStatement(ratingInsert)) {
+                            for (Doctor d : doctors) {
+                                int doctorId = d.getEmail().hashCode(); // Assuming hashCode as ID
+                                for (Rating r : d.getRatings()) {
+                                    pstmt.setInt(1, doctorId);
+                                    pstmt.setString(2, r.getPatientName());
+                                    pstmt.setInt(3, r.getScore());
+                                    pstmt.setString(4, r.getReview());
+                                    pstmt.executeUpdate();
+                                }
+                            }
+                        }
+                
                         System.out.println("Data successfully deloaded from arrays to database");
-            
+                
                     } catch (SQLException e) {
                         System.err.println("Error deloading data: " + e.getMessage());
                         e.printStackTrace();
                     }
                 }
-
+                
     static void bookAppointment(Patient patient) {
         System.out.println("Available Doctors:");
         for (int i = 0; i < doctors.size(); i++) {
@@ -1036,6 +1147,11 @@ class Patient extends User {
     public static List<Patient> getPatients() {
        return patients;
     }
+
+    public static List<Appointment> getAppointments(){
+        return appointments;
+    }
+
 }
 class databaseconnection 
 {

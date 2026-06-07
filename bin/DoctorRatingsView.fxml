@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="DoctorRatingsViewController" alignment="CENTER" spacing="10">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Doctor Ratings" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+    <Label fx:id="doctorInfoLabel" style="-fx-font-size: 16px; -fx-text-fill: #333;" />
+    <ListView fx:id="ratingsListView" prefHeight="300" prefWidth="400" />
+</VBox>

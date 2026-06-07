@@ -26,22 +26,28 @@ public class PatientRegisterController {
         String name = nameField.getText().trim();
         String email = emailField.getText().trim();
         String password = passwordField.getText().trim();
+
+        if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            showAlert("Please fill in all fields before registering.");
+            return;
+        }
+
         HealthClinicSystem.patients.add(new Patient(name, email, password));
-        
         showAlert("Registration successful.");
+        
+        // Optionally clear the form
+        nameField.clear();
+        emailField.clear();
+        passwordField.clear();
     }
     
     @FXML
     private void goBack(ActionEvent event) {
         try {
-            // Load the Login.fxml file
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
             Parent root = loader.load();
-            
-            // Get the current stage (window)
+
             Stage stage = (Stage) nameField.getScene().getWindow();
-            
-            // Set the new scene to the stage
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
@@ -52,11 +58,10 @@ public class PatientRegisterController {
     }
     
     private void showAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION); // Change to INFORMATION type
-        alert.setTitle("Success");
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Notification");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.show();
     }
-    
 }

@@ -1,18 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.*?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="ViewDoctorProfilesController" prefHeight="400.0" prefWidth="600.0" stylesheets="app.css">
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="ViewDoctorProfilesController" prefHeight="500.0" prefWidth="650.0"
+            style="-fx-background-color: #f4f9ff; -fx-padding: 20;">
     <children>
-        <!-- Title -->
-        <Label text="Doctor Profiles" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #0078D7;" alignment="CENTER" AnchorPane.topAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
 
-        <!-- Doctors List -->
-        <ListView fx:id="doctorsListView" layoutX="20.0" layoutY="70.0" prefWidth="560.0" prefHeight="300.0">
+        <Label text="Doctor Profiles" layoutX="0.0" layoutY="10.0"
+               style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #0078D7;" 
+               alignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
+
+        <HBox layoutX="20.0" layoutY="60.0" spacing="10">
+            <ComboBox fx:id="specializationFilter" prefWidth="200.0" promptText="Filter by Specialization"/>
+            <ComboBox fx:id="locationFilter" prefWidth="200.0" promptText="Filter by Location"/>
+            <Button fx:id="applyFilterButton" text="Apply Filter" onAction="#applyFilter" style="-fx-background-color: #0078D7; -fx-text-fill: white;"/>
+            <Button fx:id="removeFilterButton" text="Remove Filters" onAction="#removeFilters" style="-fx-background-color: #E81123; -fx-text-fill: white;"/>
+        </HBox>
+
+        <ListView fx:id="doctorsListView" layoutX="20.0" layoutY="110.0" prefWidth="610.0" prefHeight="310.0"
+                  style="-fx-font-size: 14px;">
             <placeholder>
                 <Label text="No doctors available."/>
             </placeholder>
         </ListView>
+
+        <Button fx:id="viewRatingButton" text="View Rating" layoutX="270.0" layoutY="440.0" 
+                onAction="#viewRating" style="-fx-background-color: #28A745; -fx-text-fill: white;"/>
     </children>
 </AnchorPane>

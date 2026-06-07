@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="DoctorEarningsController" prefHeight="400.0" prefWidth="600.0"
+            style="-fx-background-color: linear-gradient(to bottom right, #f0f4f7, #d9e4ec);">
+    
+    <children>
+        <VBox alignment="CENTER" spacing="20" layoutX="100.0" layoutY="80.0" prefWidth="400">
+            <Label text="Earnings Dashboard"
+                   style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+
+            <Label fx:id="earningsLabel"
+                   text="Your Earnings: $0.00"
+                   style="-fx-font-size: 22px; -fx-text-fill: #27ae60; -fx-font-weight: bold;" />
+
+            <Separator prefWidth="300" />
+
+            <Label text="Keep up the great work!"
+                   style="-fx-font-size: 16px; -fx-text-fill: #34495e;" />
+        </VBox>
+    </children>
+</AnchorPane>

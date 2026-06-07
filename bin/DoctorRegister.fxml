@@ -2,17 +2,31 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="DoctorRegisterController" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #e6f7ff;">
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="DoctorRegisterController"
+            prefHeight="600.0" prefWidth="800.0"
+            style="-fx-background-color: linear-gradient(to bottom, #e6f7ff, #ffffff);">
     <children>
-        <VBox alignment="CENTER" spacing="15.0" style="-fx-padding: 20;" prefWidth="400.0" layoutX="200" layoutY="50">
-            <Label text="Register as Doctor" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
-            <TextField fx:id="nameField" promptText="Name" prefWidth="300.0" />
-            <TextField fx:id="emailField" promptText="Email" prefWidth="300.0" />
-            <PasswordField fx:id="passwordField" promptText="Password" prefWidth="300.0" />
-            <TextField fx:id="specializationField" promptText="Specialization" prefWidth="300.0" />
-            <TextField fx:id="locationField" promptText="Location" prefWidth="300.0" />
-            <Button text="Register" onAction="#handleDoctorRegister" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14px;" prefWidth="300.0" />
-            <Hyperlink text="   Back to Login" onAction="#goBack" style="-fx-font-size: 14px;"/>
+        <VBox alignment="CENTER" spacing="18.0" layoutX="200.0" layoutY="50.0" prefWidth="400.0"
+              style="-fx-background-color: #ffffff; -fx-padding: 30; -fx-border-color: #dcdcdc; -fx-border-radius: 10; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);">
+            <children>
+                <Label text="Register as Doctor"
+                       style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+
+                <TextField fx:id="nameField" promptText="Full Name" prefWidth="300.0" style="-fx-font-size: 14px;" />
+                <TextField fx:id="emailField" promptText="Email Address" prefWidth="300.0" style="-fx-font-size: 14px;" />
+                <PasswordField fx:id="passwordField" promptText="Create Password" prefWidth="300.0" style="-fx-font-size: 14px;" />
+                <TextField fx:id="specializationField" promptText="Specialization" prefWidth="300.0" style="-fx-font-size: 14px;" />
+
+                <!-- ComboBox (items added in controller) -->
+                <ComboBox fx:id="locationComboBox" promptText="Select City" prefWidth="300.0"
+                          style="-fx-font-size: 14px;" />
+
+                <Button text="Register" onAction="#handleDoctorRegister" prefWidth="300.0" prefHeight="40.0"
+                        style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 20;" />
+
+                <Hyperlink text="← Back to Login" onAction="#goBack"
+                           style="-fx-font-size: 14px; -fx-text-fill: #3498db;" />
+            </children>
         </VBox>
     </children>
 </AnchorPane>

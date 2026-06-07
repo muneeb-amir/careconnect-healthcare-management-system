@@ -1,89 +1,75 @@
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 import javafx.geometry.Pos;
+import javafx.stage.Stage;
+
 import java.util.List;
 
 public class AllAppointmentsController {
 
-    AllAppointmentsController(){
-        loadAllAppointments();
-    }
-
     @FXML
     private ListView<HBox> allAppointmentsListView;
 
-    private Doctor doctor;
+    private Doctor doctor; // The logged-in doctor
 
+    // Set the logged-in doctor
     public void setDoctor(Doctor doctor) {
         this.doctor = doctor;
-        loadAllAppointments();
+        loadAllAppointments(); // Load all appointments when the doctor is set
     }
 
+    // Load all appointments into the ListView
     private void loadAllAppointments() {
-        allAppointmentsListView.getItems().clear();
+        allAppointmentsListView.getItems().clear(); // Clear previous entries
 
         List<Appointment> appointments = doctor.appointments;
         for (Appointment appointment : appointments) {
-            // Create label for appointment details
-            Label label = new Label(
+            Label appointmentLabel = new Label(
                 "Patient: " + appointment.patient.getName() +
                 " - Date: " + appointment.date +
                 " - Time: " + appointment.time +
                 " - Status: " + appointment.getStatus()
             );
-            label.setStyle("-fx-font-size: 14px;");
-            label.setPrefWidth(550); // Adjusted to fit within ListView and leave space for button
 
-            // Create Completed button
-            Button completeButton = new Button("Completed");
-            completeButton.setPrefWidth(100);
-            completeButton.setStyle("-fx-background-color: #5cb85c; -fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: bold;");
+            HBox hbox = new HBox(10);
+            hbox.setAlignment(Pos.CENTER_LEFT);
+            hbox.getChildren().add(appointmentLabel);
 
-            // Enable button only for Accepted status
+            // Add "Completed" button only if status is "Accepted"
             if ("Accepted".equalsIgnoreCase(appointment.getStatus())) {
-                completeButton.setOnAction(event -> {
-                    appointment.setStatus("Completed");
+                Button completeButton = new Button("Completed");
+                completeButton.setStyle("-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold;");
+                completeButton.setOnAction(e -> {
+                     appointment.status="Completed";
                     showAlert("Success", "Appointment marked as completed.");
+                    doctor.earnings+=30;
                     loadAllAppointments(); // Refresh the list
                 });
-            } else {
-                completeButton.setDisable(true);
-                completeButton.setStyle("-fx-background-color: #5cb85c; -fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: bold; -fx-opacity: 0.5;");
+                hbox.getChildren().add(completeButton);
             }
-
-            // Create HBox to hold label and button
-            HBox hbox = new HBox(label, completeButton);
-            hbox.setAlignment(Pos.CENTER_LEFT);
-            hbox.setSpacing(15); // Increased spacing for better visibility
-            hbox.setStyle("-fx-padding: 5 10 5 10; -fx-background-color: #ffffff;"); // Match screenshot's white background
 
             allAppointmentsListView.getItems().add(hbox);
         }
 
-        // Handle empty appointments list
         if (allAppointmentsListView.getItems().isEmpty()) {
-            HBox emptyBox = new HBox(new Label("No appointments found."));
-            emptyBox.setAlignment(Pos.CENTER);
-            emptyBox.setStyle("-fx-padding: 10;");
-            allAppointmentsListView.getItems().add(emptyBox);
+            allAppointmentsListView.getItems().add(new HBox(new Label("No appointments found.")));
         }
     }
 
+    // Handle Back button click
     @FXML
     private void handleBack() {
         try {
-            Stage stage = (Stage) allAppointmentsListView.getScene().getWindow();
-            stage.close();
+            Stage currentStage = (Stage) allAppointmentsListView.getScene().getWindow();
+            currentStage.close();
         } catch (Exception e) {
-            showAlert("Error", "Could not close the window.");
+            e.printStackTrace();
+            showAlert("Error", "Failed to close the current window.");
         }
     }
 
+    // Helper method to show alert dialogs
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);

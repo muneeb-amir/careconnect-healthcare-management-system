@@ -103,6 +103,7 @@ public class PatientDashboardController {
             stage.setTitle("Login");
             stage.setScene(new Scene(root));
             stage.show();
+            HealthClinicSystem.deloader();
 
             // Close the current patient dashboard window
             Stage currentStage = (Stage) logoutButton.getScene().getWindow();

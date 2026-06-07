@@ -11,6 +11,9 @@ import javafx.stage.Stage;
 public class DoctorDashboardController {
 
     @FXML
+    private Button viewEarningsButton;
+    
+    @FXML
     private Label welcomeLabel;
 
     @FXML
@@ -126,6 +129,28 @@ public class DoctorDashboardController {
         }
     }
 
+
+
+@FXML
+private void handleViewEarnings() {
+    try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("DoctorEarnings.fxml"));
+        AnchorPane root = loader.load();
+
+        DoctorEarningsController controller = loader.getController();
+        controller.setDoctor(doctor); // Pass the doctor to earnings view
+
+        Stage stage = new Stage();
+        stage.setTitle("Doctor Earnings");
+        stage.setScene(new Scene(root));
+        stage.show();
+    } catch (Exception e) {
+        e.printStackTrace();
+        showAlert("Error", "Failed to load Doctor Earnings view.");
+    }
+}
+
+
     // Handle "Logout" button click
     @FXML
     private void handleLogout() {
@@ -134,7 +159,7 @@ public class DoctorDashboardController {
             if (currentStage != null) {
                 currentStage.close();
             }
-
+            HealthClinicSystem.deloader();
             // Open the login screen
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
             AnchorPane root = loader.load();

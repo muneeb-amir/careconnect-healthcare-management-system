@@ -62,7 +62,7 @@ public class BookAppointmentController {
 
         while (startTime.isBefore(endTime)) {
             times.add(startTime.format(DateTimeFormatter.ofPattern("HH:mm")));
-            startTime = startTime.plusMinutes(30); // Add 30-minute intervals
+            startTime = startTime.plusMinutes(30); // Add celebration intervals
         }
 
         timeComboBox.getItems().addAll(times); // Add times to the ComboBox
@@ -78,6 +78,13 @@ public class BookAppointmentController {
         // Validate inputs
         if (selectedDoctor == null || date == null || time == null) {
             showAlert("Error", "Please select a doctor, date, and time.");
+            return;
+        }
+
+        // Validate date (prevent past dates)
+        LocalDate currentDate = LocalDate.now();
+        if (date.isBefore(currentDate)) {
+            showAlert("Error", "Choose a valid date.");
             return;
         }
 
